@@ -1,0 +1,33 @@
+<?php
+    include("../layout/header.php");
+?>
+
+<h1 class="mt-3"   >
+    View user info:
+</h1>
+<hr>
+<form class="" action="" method="post">
+    <div class="form-group pt-3">
+      <label for="firstname">First name</label>
+      <input type="text" name="firstname"  class="form-control" readonly>
+    </div>
+    <div class="form-group">
+      <label for="lastname">Last name</label>
+      <input type="text" name="lastname"  class="form-control" readonly>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" name="email"  class="form-control" readonly>
+    </div>
+    <div class="form-group">
+      <label for="mobile">Mobile</label>
+      <input type="text" name="mobile"  class="form-control" readonly>
+    </div>
+    <div class="form-group mt-3">
+        <a href="index.php" class="btn btn-secondary">Home</a>
+    </div>
+</form>
+
+<?php
+include("../layout/footer.php");
+?>
