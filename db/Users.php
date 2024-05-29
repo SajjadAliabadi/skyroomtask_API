@@ -1,8 +1,8 @@
 <?php
 include "Database.php";
+
 class Users {
     private $db;
-
     public function __construct(){
        $this->db=new Database();
     }
@@ -30,7 +30,7 @@ class Users {
             ':mobile' => $mobile,
             ':password' => password_hash($password, PASSWORD_BCRYPT)
         ]);
-        return $this->db->pdo->lastInsertId();
+        return array(true,"Insert user successfully");
     }
 
     // Read a user by ID
@@ -115,7 +115,7 @@ class Users {
             return array(false,"password must be at least 8 characters long");
         }
 
-        if (!preg_match("/^[a-zA-Z]*$/",$password)){
+        if (!preg_match("/^[a-zA-Z0-9]*$/",$password)){
             return array(false, "password must contain at least one letter");
         }
 

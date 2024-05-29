@@ -1,4 +1,19 @@
 <?php
+    include("../layout/header.php");
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
+        list($flag, $msg) = $usersDB->createUser($_POST);
+        if (!$flag){
+            echo "<div class='alert alert-danger'>$msg</div>";
+        }else{
+            echo "<div class='alert alert-success'>$msg</div>";
+        }
+    }
+
+    $firstname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
+    $lastname = isset($_POST['lastname']) ? $_POST['lastname'] : '';
+    $email = isset($_POST['email']) ? $_POST['email'] : '';
+    $mobile = isset($_POST['mobile']) ? $_POST['mobile'] : '';
 ?>
 
 <h1 class="mt-3"   >
@@ -8,19 +23,19 @@
 <form class="" action="" method="post">
     <div class="form-group pt-3">
       <label for="firstname">First name</label>
-      <input type="text" name="firstname"  class="form-control">
+      <input type="text" name="firstname"  class="form-control" value="<?= htmlspecialchars($firstname); ?>">
     </div>
     <div class="form-group">
       <label for="lastname">Last name</label>
-      <input type="text" name="lastname"  class="form-control">
+      <input type="text" name="lastname"  class="form-control" value="<?= htmlspecialchars($lastname); ?>">
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" name="email"  class="form-control">
+      <input type="email" name="email"  class="form-control" value="<?= htmlspecialchars($email); ?>">
     </div>
     <div class="form-group">
       <label for="mobile">Mobile</label>
-      <input type="text" name="mobile"  class="form-control">
+      <input type="text" name="mobile"  class="form-control" value="<?= htmlspecialchars($mobile); ?>">
     </div>
     <div class="form-group">
       <label for="password">Password</label>
