@@ -1,4 +1,6 @@
 <?php
+    include ("../db/Users.php");
+    $usersDB = new Users();
 ?>
 
 <!doctype html>
