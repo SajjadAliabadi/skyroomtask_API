@@ -16,7 +16,7 @@ class Users {
         $mobile = isset($data['mobile']) ? $data['mobile']:"";
         $password = isset($data['password']) ? $data['password']:"";
 
-        list($flag, $msg) = $this->validation($data);
+        list($flag, $msg) = $this->validation($data, 'insert');
         if (!$flag){
             return array($flag, $msg);
         }
@@ -43,19 +43,23 @@ class Users {
 
     // Update a user by ID
     public function updateUser($userID, $data) {
-        $firstname = $data['firstname'];
-        $lastname = $data['lastname'];
-        $email = $data['email'];
-        $mobile = $data['mobile'];
-        $password = $data['password'];
-        list($flag, $msg) = $this->validation($data);
+        $firstname =isset($data['firstname']) ? $data['firstname']:"";
+        $lastname = isset($data['lastname']) ? $data['lastname']:"";
+        $email = isset($data['email']) ? $data['email']:"";
+        $mobile = isset($data['mobile']) ? $data['mobile']:"";
+        $password = isset($data['password']) ? $data['password']:"";
+
+        list($flag, $msg) = $this->validation($data, 'update');
         if (!$flag){
             return array($flag, $msg);
+        }
+        if( $this->checkExistEmail($email, $userID)){
+            return array(false, "Email already exists");
         }
 
         $sql = "UPDATE users SET Firstname = :firstname, Lastname = :lastname, Email = :email, Mobile = :mobile, password = :password WHERE id = :id";
         $stmt = $this->db->pdo->prepare($sql);
-        echo $stmt->execute([
+        $err=$stmt->execute([
             ':id' => $userID,
             ':firstname' => $firstname,
             ':lastname' => $lastname,
@@ -63,6 +67,12 @@ class Users {
             ':mobile' => $mobile,
             ':password' => password_hash($password, PASSWORD_BCRYPT)
         ]);
+        if (!$err){
+            return array($err, "Update has an error!");
+        }else{
+            return array($err, "update successfully!");
+        }
+
     }
 
     // Delete a user by ID
@@ -80,28 +90,25 @@ class Users {
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    private function checkExistEmail($email){
-        $sql = "SELECT email from  users WHERE email = :email";
+    private function checkExistEmail($email, $userID){
+        $sql = "SELECT email from  users WHERE email = :email and id = :userID";
         $stmt = $this->db->pdo->prepare($sql);
         $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':userID', $userID);
         $stmt->execute();
-        if ($stmt->rowCount()> 0) {
+        if ($stmt->rowCount()> 1) {
             return true;
         }else{
             return false;
         }
     }
 
-    private function validation($data){
+    private function validation($data, $type){
         $firstname =isset($data['firstname']) ? $data['firstname']:"";
         $lastname = isset($data['lastname']) ? $data['lastname']:"";
         $email = isset($data['email']) ? $data['email']:"";
         $mobile = isset($data['mobile']) ? $data['mobile']:"";
         $password = isset($data['password']) ? $data['password']:"";
-
-        if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
-            return array(false,"Firstname, Lastname, Email and password are required");
-        }
 
         if (strlen($firstname)<3){
             return array(false,"Firstname must be at least 3 characters long");
@@ -111,19 +118,31 @@ class Users {
             return array(false,"Lastname must be at least 3 characters long");
         }
 
-        if (strlen($password)<8){
-            return array(false,"password must be at least 8 characters long");
+        if ($type=="insert"){
+            if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
+                return array(false,"Firstname, Lastname, Email and password are required");
+            }
+
+            if (!preg_match("/^[a-zA-Z0-9]*$/",$password)){
+                return array(false, "password must contain at least one letter");
+            }
+
+            if( $this->checkExistEmail($email, 0)){
+                return array(false, "Email already exists");
+            }
+
+            if (strlen($password)<8){
+                return array(false,"password must be at least 8 characters long");
+            }
+
+        }
+        if ($type=="update"){
+            if (empty($firstname) || empty($lastname) || empty($email) ) {
+                return array(false,"Firstname, Lastname, Email and password are required 00");
+            }
         }
 
-        if (!preg_match("/^[a-zA-Z0-9]*$/",$password)){
-            return array(false, "password must contain at least one letter");
-        }
-
-        if( $this->checkExistEmail($email)){
-            return array(false, "Email already exists");
-        }
-
-        return array(true,"");
+        return array(true  ,"success!");
     }
 }
 ?>

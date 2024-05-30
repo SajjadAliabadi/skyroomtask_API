@@ -1,5 +1,5 @@
 <?php
-$path= $_SERVER["DOCUMENT_ROOT"] . "/skyroom/layout/header.php");
+$path= $_SERVER["DOCUMENT_ROOT"] . "/skyroom/layout/header.php";
 include $path;
 
     if (!isset($_GET['id'])) {
@@ -11,16 +11,22 @@ include $path;
     $lastname = isset($user->Lastname) ? $user->Lastname : '';
     $email = isset($user->Email) ? $user->Email : '';
     $mobile = isset($user->Mobile) ? $user->Mobile : '';
-    $password = isset($user->Password) ? $user->Password : '';
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
             list($flag, $msg) = $usersDB->updateUser($user->id, $_POST);
-            if (!$flag){
+            if (!$flag ){
                 echo "<div class='alert alert-danger'>$msg</div>";
             }else{
                 echo "<div class='alert alert-success'>$msg</div>";
             }
     }
+
+    $user= $usersDB->getUserById($_GET['id']);
+    $firstname = isset($user->Firstname) ? $user->Firstname : '';
+    $lastname = isset($user->Lastname) ? $user->Lastname : '';
+    $email = isset($user->Email) ? $user->Email : '';
+    $mobile = isset($user->Mobile) ? $user->Mobile : '';
+
 ?>
 
 <h1 class="mt-3"   >
@@ -44,12 +50,8 @@ include $path;
             <label for="mobile">Mobile</label>
             <input type="text" name="mobile"  class="form-control" value="<?= $mobile; ?>">
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="form-control" value="<?= $password; ?>">
-        </div>
         <div class="form-group mt-3">
-            <button type="submit" name="register" class="btn btn-success">Register</button>
+            <button type="submit" name="update" class="btn btn-success">Update</button>
             <button type="reset" name="reset" class="btn btn-info">Reset</button>
             <a href="index.php" class="btn btn-secondary">Home</a>
         </div>
