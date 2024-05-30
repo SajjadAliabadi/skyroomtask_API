@@ -1,5 +1,6 @@
 <?php
-    include("../layout/header.php");
+    $path= $_SERVER["DOCUMENT_ROOT"] . "/skyroom/layout/header.php";
+    include $path;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         list($flag, $msg) = $usersDB->createUser($_POST);

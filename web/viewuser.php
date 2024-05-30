@@ -1,5 +1,6 @@
 <?php
-    include("../layout/header.php");
+    $path= $_SERVER["DOCUMENT_ROOT"] . "/skyroom/layout/header.php";
+    include $path
 
     if (!isset($_GET['id'])) {
         header("Location: index.php");

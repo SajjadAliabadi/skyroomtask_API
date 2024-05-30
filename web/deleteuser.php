@@ -1,5 +1,6 @@
 <?php
-    include("../layout/header.php");
+$path= $_SERVER["DOCUMENT_ROOT"] . "/skyroom/layout/header.php");
+include $path;
 ?>
 
 <h1 class="mt-3"   >
