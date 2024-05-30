@@ -14,7 +14,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
         return;
     }
 
-    list($flag, $msg) = $usersDB->updateUser($_GET['id'], $_POST);
+    $jsonString = file_get_contents('php://input');
+    $body = json_decode($jsonString, true);;
+
+    list($flag, $msg) = $usersDB->updateUser($_GET['id'], $body);
     if (!$flag){
         $error = array(
             "status" => "false",

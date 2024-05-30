@@ -16,6 +16,8 @@ class Users {
         $mobile = isset($data['mobile']) ? $data['mobile']:"";
         $password = isset($data['password']) ? $data['password']:"";
 
+        echo "firstname:".$firstname;
+
         list($flag, $msg) = $this->validation($data, 'insert');
         if (!$flag){
             return array($flag, $msg);

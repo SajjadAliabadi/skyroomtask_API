@@ -6,7 +6,10 @@ include $path;
 $usersDB = new Users();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    list($flag, $msg) = $usersDB->createUser($_POST);
+    $jsonString = file_get_contents('php://input');
+    $body = json_decode($jsonString, true);;
+
+    list($flag, $msg) = $usersDB->createUser($body);
     if (!$flag){
         $error = array(
             "status" => "false",
