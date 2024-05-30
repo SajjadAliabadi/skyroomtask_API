@@ -99,6 +99,8 @@ class Users {
         $mobile = $data['mobile'];
         $password = $data['password'];
 
+        var_dump($data["firstname"]);
+
         if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
             return array(false,"Firstname, Lastname, Email and password are required");
         }
