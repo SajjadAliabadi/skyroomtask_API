@@ -10,11 +10,11 @@ class Users {
 
     // Create a new user
     public function createUser($data) {
-        $firstname = $data['firstname'];
-        $lastname = $data['lastname'];
-        $email = $data['email'];
-        $mobile = $data['mobile'];
-        $password = $data['password'];
+        $firstname =isset($data['firstname']) ? $data['firstname']:"";
+        $lastname = isset($data['lastname']) ? $data['lastname']:"";
+        $email = isset($data['email']) ? $data['email']:"";
+        $mobile = isset($data['mobile']) ? $data['mobile']:"";
+        $password = isset($data['password']) ? $data['password']:"";
 
         list($flag, $msg) = $this->validation($data);
         if (!$flag){
@@ -93,11 +93,11 @@ class Users {
     }
 
     private function validation($data){
-        $firstname = $data['firstname'];
-        $lastname = $data['lastname'];
-        $email = $data['email'];
-        $mobile = $data['mobile'];
-        $password = $data['password'];
+        $firstname =isset($data['firstname']) ? $data['firstname']:"";
+        $lastname = isset($data['lastname']) ? $data['lastname']:"";
+        $email = isset($data['email']) ? $data['email']:"";
+        $mobile = isset($data['mobile']) ? $data['mobile']:"";
+        $password = isset($data['password']) ? $data['password']:"";
 
         if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
             return array(false,"Firstname, Lastname, Email and password are required");
