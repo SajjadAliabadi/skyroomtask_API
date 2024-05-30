@@ -4,7 +4,7 @@ $path= $_SERVER["DOCUMENT_ROOT"] . "/skyroom/db/Users.php";
 include $path;
 $usersDB = new Users();
 
-if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!isset($_GET['id'])) {
         $error = array(
             "status" => "false",
@@ -14,11 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
         return;
     }
 
-    list($flag, $msg) = $usersDB->updateUser($_GET['id'], $_POST);
-    if (!$flag){
+     $user= $usersDB->getUserById($_GET['id']);
+    if (!$user){
         $error = array(
             "status" => "false",
-            "message" => $msg,
+            "message" => "can't find this record!",
         );
 
         showOutput($error);
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
     }else{
         $success = array(
             "status" => "true",
-            "message" => $msg,
+            "message" => $user,
         );
 
         showOutput($success);
